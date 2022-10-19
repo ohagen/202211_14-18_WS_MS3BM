@@ -32,7 +32,7 @@ carpentry: "swc"
 # dc-geospatial: for Data Carpentry Geospatial
 # swc-inflammation: for Software Carpentry based on the inflammation dataset
 # swc-gapminder: for Software Carpentry based on the Gapminder dataset
-curriculum: "FIXME"
+curriculum: "swc-information"
 
 # If there is both an R and python official version of a curriculum
 # (as listed on https://software-carpentry.org/lessons/ and
@@ -40,7 +40,7 @@ curriculum: "FIXME"
 # value of the variable below ("flavor") to get the schedule and installation
 # instructions updated accordingly (valid values are 'r' or 'python').
 # Note: this is only for Data Carpentry and SWC at this time.
-flavor: "FIXME"
+flavor: "R"
 
 # If the workshop will be a lesson pilot (for a new official lesson or
 # a lesson in The Carpentries Incubator), set pilot to "true"
