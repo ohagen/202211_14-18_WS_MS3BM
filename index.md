@@ -262,6 +262,8 @@ Display the contact email address set in the configuration file.
 <p id="contact">
   <strong>Contact:</strong>
   Please email
+  
+  {% comment %}
   {% if page.email %}
   {% for email in page.email %}
   {% if forloop.last and page.email.size > 1 %}
@@ -276,6 +278,9 @@ Display the contact email address set in the configuration file.
   {% else %}
   to-be-announced
   {% endif %}
+  {% endcomment %}
+  
+  ydiv@idiv.de 
   for more information.
 </p>
 
