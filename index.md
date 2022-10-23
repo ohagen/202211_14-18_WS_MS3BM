@@ -111,6 +111,7 @@ INTRODUCTION
 Edit the general explanatory paragraph below if you want to change
 the pitch.
 {% endcomment %}
+{% comment %}
 {% if site.carpentry == "swc" %}
 {% include swc/intro.html %}
 {% elsif site.carpentry == "dc" %}
@@ -118,6 +119,8 @@ the pitch.
 {% elsif site.carpentry == "lc" %}
 {% include lc/intro.html %}
 {% endif %}
+{% endcomment %}
+Pioneer naturalists such as Whewell, Lyell, Humboldt, Darwin and Wallace acknowledged the interactions between ecological and evolutionary forces, as well as the roles of continental movement, mountain formation and climate variations, in shaping biodiversity patterns. Studies show that linking these processes is necessary to reproduce multiple large-scale biodiversity patterns simultaneously. Recent developments in computer modelling and paleo-environmental reconstruction make it possible to study in silico how biodiversity emerges from eco-evolutionary and environmental dynamic processes and their interactions. This course aims to develop skills required to simulate emergent biodiversity using gen3sis engine, consequently enabling you to design experiments and analyze multiple interconnected hypotheses existing in a largely fragmented scientific landscape.
 
 {% if site.pilot %}
 This is a pilot workshop, testing out a lesson that is still under development. The lesson authors would appreciate any feedback you can give them about the lesson content and suggestions for how it could be further improved.
@@ -126,9 +129,8 @@ This is a pilot workshop, testing out a lesson that is still under development. 
 {% comment %}
 AUDIENCE
 
-Doctoral and postdoctoral researchers familiar with the gen3sis R-package or with a pressing problem that can be addressed with gen3sis modeling engine.
-
 {% endcomment %}
+{% comment %}
 {% if site.carpentry == "swc" %}
 {% include swc/who.html %}
 {% elsif site.carpentry == "dc" %}
@@ -136,7 +138,8 @@ Doctoral and postdoctoral researchers familiar with the gen3sis R-package or wit
 {% elsif site.carpentry == "lc" %}
 {% include lc/who.html %}
 {% endif %}
-
+{% endcomment %}
+Doctoral and postdoctoral researchers familiar with the gen3sis R-package or with a pressing problem that can be addressed with gen3sis modeling engine.
 {% comment %}
 LOCATION
 
