@@ -122,6 +122,19 @@ the pitch.
 {% endcomment %}
 Pioneer naturalists such as Whewell, Lyell, Humboldt, Darwin and Wallace acknowledged the interactions between ecological and evolutionary forces, as well as the roles of continental movement, mountain formation and climate variations, in shaping biodiversity patterns. Studies show that linking these processes is necessary to reproduce multiple large-scale biodiversity patterns simultaneously. Recent developments in computer modelling and paleo-environmental reconstruction make it possible to study in silico how biodiversity emerges from eco-evolutionary and environmental dynamic processes and their interactions. This course aims to develop skills required to simulate emergent biodiversity using gen3sis engine, consequently enabling you to design experiments and analyze multiple interconnected hypotheses existing in a largely fragmented scientific landscape.
 
+You will leave the course confident to create new landscapes and eco-evolutionary rules, conduct simulation experiments (full modeling cycle) and reflect about emergent patterns. Moreover, you will gain knowledge on how to apply and how not to apply such tools, as well as be familiar with its limitations and potentials. The interdisciplinary nature of this course and participants list, should open new scientific pathways and collaborations, facilitating the communication and contemplation of causal implications of complex eco-evolutionary and environmental interaction based on algorithmic formality.
+
+This course/workshop is a hybrid first event with the objectives of: 
+<ol>
+	<li> disseminating knowledge on how to use gen3sis for different research questions </li> 
+	<li> establish new connections between iDiv and external members </li> 
+	<li> kick off fruitful collaborations </li>
+	<li> provide hands-on knowledge on mechanistic modelling cycle </li>
+</ol>
+
+The course will have two components, a seminar component covering an introductory natural philosophical contextualization, mechanistic models and talks by invited lecturers with practical exercises in R, and a "hands-on" component that involves using computer simulations to test hypotheses about how biodiversity is generated and maintained which will be designed by the course participants. We will use mostly simulated data and work on linking processes and patterns.
+
+
 {% if site.pilot %}
 This is a pilot workshop, testing out a lesson that is still under development. The lesson authors would appreciate any feedback you can give them about the lesson content and suggestions for how it could be further improved.
 {% endif %}
