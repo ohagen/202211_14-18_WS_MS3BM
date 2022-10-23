@@ -294,6 +294,7 @@ Edit the text to match who can attend the workshop. For instance:
 {% comment%}
 CODE OF CONDUCT
 {% endcomment %}
+{% comment%}
 <h2 id="code-of-conduct">Code of Conduct</h2>
 
 <p>
@@ -306,7 +307,7 @@ Everyone who participates in Carpentries activities is required to conform to th
   </a>
 </p>
 <hr/>
-
+{% endcomment %}
 
 {% comment %}
 Collaborative Notes
