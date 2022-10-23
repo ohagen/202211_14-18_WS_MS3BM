@@ -135,10 +135,11 @@ This course/workshop is a hybrid first event with the objectives of:
 
 The course will have two components, a seminar component covering an introductory natural philosophical contextualization, mechanistic models and talks by invited lecturers with practical exercises in R, and a "hands-on" component that involves using computer simulations to test hypotheses about how biodiversity is generated and maintained which will be designed by the course participants. We will use mostly simulated data and work on linking processes and patterns.
 
-
+{% comment %}
 {% if site.pilot %}
 This is a pilot workshop, testing out a lesson that is still under development. The lesson authors would appreciate any feedback you can give them about the lesson content and suggestions for how it could be further improved.
 {% endif %}
+{% endcomment %}
 
 {% comment %}
 AUDIENCE
@@ -153,7 +154,7 @@ AUDIENCE
 {% include lc/who.html %}
 {% endif %}
 {% endcomment %}
-Doctoral and postdoctoral researchers familiar with the gen3sis R-package or with a pressing problem that can be addressed with gen3sis modeling engine.
+<b>Who:</b> Doctoral and postdoctoral researchers familiar with the gen3sis R-package or with a pressing problem that can be addressed with gen3sis modeling engine.
 {% comment %}
 LOCATION
 
