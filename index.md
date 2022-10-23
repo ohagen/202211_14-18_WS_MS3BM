@@ -154,7 +154,14 @@ AUDIENCE
 {% include lc/who.html %}
 {% endif %}
 {% endcomment %}
-<b>Who:</b> Doctoral and postdoctoral researchers familiar with the gen3sis R-package or with a pressing problem that can be addressed with gen3sis modeling engine.
+<b>Who:</b> Doctoral and postdoctoral researchers familiar with the gen3sis R-package and/or with a pressing problem that can be addressed with gen3sis modeling engine.
+
+<div class="alert alert-warning">
+Basic programming and R knowledge is required. If you do not feel comfortable creating functions or loops, for example, invest some time improving your general R skills before coming to the course! This will make your time at the workshop much more fruitful. Bellow some recommended 
+ Data types in R and a nice structured tutorial <a href="https://www.programiz.com/r/data-types">here</a>.
+ Alternative learning source for <a href="https://swcarpentry.github.io/r-novice-inflammation/02-func-R/index.html">writing functions</a>, <a href="https://swcarpentry.github.io/r-novice-inflammation/03-loops-R/index.html">loops</a> and <a href="https://swcarpentry.github.io/r-novice-inflammation/04-cond/index.html">conditionals</a>.
+</div>
+
 {% comment %}
 LOCATION
 
