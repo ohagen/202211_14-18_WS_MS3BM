@@ -165,7 +165,7 @@ Basic programming and R knowledge is required. If you do not feel comfortable cr
 {% comment %}
 LOCATION
 
-This block displays the address and links to maps showing directions
+This block displays the address and links to maps showing directions	
 if the latitude and longitude of the workshop have been set.  You
 can use https://www.latlong.net/ to find the lat/long of an
 address.
