@@ -126,7 +126,7 @@ This is a pilot workshop, testing out a lesson that is still under development. 
 {% comment %}
 AUDIENCE
 
-Doctoral and postdoctoral researchers familiar with the gen3sis R-package or with a pressing problem that can be addressed with this tool.
+Doctoral and postdoctoral researchers familiar with the gen3sis R-package or with a pressing problem that can be addressed with gen3sis modeling engine.
 
 {% endcomment %}
 {% if site.carpentry == "swc" %}
