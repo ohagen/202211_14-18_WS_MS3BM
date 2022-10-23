@@ -126,10 +126,11 @@ You will leave the course confident to create new landscapes and eco-evolutionar
 
 This course/workshop is a hybrid first event with the objectives of: 
 <ol>
-	<li> disseminating knowledge on how to use gen3sis for different research questions </li> 
+	<li> disseminate knowledge on how to use gen3sis for different research questions </li>
+	<li> provide hands-on knowledge on mechanistic modelling cycle </li>
 	<li> establish new connections between iDiv and external members </li> 
 	<li> kick off fruitful collaborations </li>
-	<li> provide hands-on knowledge on mechanistic modelling cycle </li>
+
 </ol>
 
 The course will have two components, a seminar component covering an introductory natural philosophical contextualization, mechanistic models and talks by invited lecturers with practical exercises in R, and a "hands-on" component that involves using computer simulations to test hypotheses about how biodiversity is generated and maintained which will be designed by the course participants. We will use mostly simulated data and work on linking processes and patterns.
