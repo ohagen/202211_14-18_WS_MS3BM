@@ -32,7 +32,7 @@
 source(file.path(getwd(), "source.R"))
 
 ### [] Paths ---------------
-conf_d <- file.path(dd, "configs/SA_1d")
+conf_d <- file.path(dd, "configs/SA_coarse")
 land_d <- file.path(dd, "landscapes/SA_coarse")
 exp_d <- file.path(dd, "examples/day2")
 out_d <- file.path(od, "day2")
@@ -100,7 +100,13 @@ write.table(params_table, file=file.path(exp_d, "SA_param_table.txt"), row.names
 # create a directory to place them
 if(dir.exists(file.path(dd, "configs", "SA_coarse"))==F){
   dir.create(file.path(dd, "configs", "SA_coarse"))
-  
+}
+# create dir for outputs in
+if(dir.exists(file.path(od, "day2"))==F){
+  dir.create(file.path(od, "day2"))
+}
+if(dir.exists(file.path(od, "day2", "SA_configs"))==F){
+  dir.create(file.path(od, "day2", "SA_configs"))
 }
 
 # write a loop which reads in the config template and replaces the parameters with those drawn from each row in the table
@@ -159,6 +165,11 @@ library(foreach)
 
 # get config file names and order them numerically
 configs <- list.files(file.path(exp_d,"SA_configs"))
+#### ALEX.. is this fix correct?
+# configs <- list.files(file.path(od, "day2", "SA_configs"))
+
+
+
 
 # subset M1 configs
 configs_m1 <- configs[grepl("SA_config_M1", configs)]
@@ -571,7 +582,11 @@ summary(m12)
 
 # can plot out the regression coefficients to see how metrics respond to different parameters
 # plot the first 5
-plot_summs(m1, m2, m3, m4, m5, m6)
+#ALEX I can't run this without installing broom. and these other packages... keeping this comment here JIC..!
+# library(broom)
+# library("ggstance")
+# library("broom.mixed")
+plot_summs(m1, m2, m3, m4, m5, m6) # I had troubles with this...
 # plot the second 5
 plot_summs(m7, m8, m9, m10, m11, m12)
 
