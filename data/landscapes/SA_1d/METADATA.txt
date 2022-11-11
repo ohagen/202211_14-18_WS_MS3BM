@@ -57,7 +57,7 @@ Keating-Bitonti C.R., Ivany L.C., Affek H.P., Douglas P., Samson S.D. 2011. Warm
 
 
 Publications: 
-Hagen et. al 2020/2021 gen3sis
+Hagen et. al 2021 gen3sis
 
 Description: 
 Temperatures on current koppen bands were extracted for each Koppen band (5Ma resolution)(Hagen et al. 2019) and had a focal mean applied at a strength that mimics empirical present temperature(WorldClim2 2018) spread for the koppen zones. These were first interpolated at a resolution of 1Ma. Lapse rates for each zones (Hagen et al. 2019) were applied to the respective elevation maps (Straume et al. 2020) also available at a resolution of 1Ma. Air surface temperatures were then interpolated at a ~17ky resolution. In order to account for the Quaternary climatic oscillations, for the first 2.5Ma, every second time-step had an Last Glacial Maximum (LGM) surface air temperature anomaly applied (Annan and Hargreaves 2012). From 2.5-65 Ma, a latitudinal temperature gradient (LTG) function was used to correct for paleo LTG generalizing several studies (Keating-Bitonti et al. 2011, Sijp et al. 2014, Cramwinckel et al. 2018, Evans et al. 2018, Hutchinson et al. 2018, Hollis et al. 2019, Zhang et al. 2019). LGM and LTG had strength corrected to match reference global air surface temperature maps (Westerhold et al. 2020). Global temperature differences were calculated using entire koppen band to account for sea surface temperature (Westerhold et al. 2020). For more details see (Hagen et al 2020/2021).

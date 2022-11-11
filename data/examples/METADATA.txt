@@ -1,0 +1,57 @@
+
+gen3sis landscape
+
+Version: 
+1.0
+
+Author:
+Manon Lorcery
+
+Date: 
+26.10.2022
+
+Spatial extent: 
+North + South America: latitude [-60;90] longitude [-180;-20])
+
+Spatial resolution: 
+1°
+   
+Temporal extent: 
+75-0Ma
+
+Temporal resolution: 
+time-step = 5 Ma
+
+Environmental variables: 
+
+ - Temperature (degrees Celcius) 
+ - Annual mean precipitation (m/year)
+ - Area= physiographic diversity index (units= none)
+
+Cost function: 
+- 1 land
+- 2 to water 
+
+Source Data: 
+
+Global Mean Surface Temperature (GMST) arrays for 100 Phanerozoic time intervals (stage level) are based on HadleyCM3L simulations (Valdes et al, 2021) that have been modified to better agree with geochemical proxy data (∂18O) and more equable pole-to-equator temperature gradients deduced from lithological indicators of climate (evaporites, calcrete, coals, bauxites, and tillites, etc.) (Scotese et al., 2021).
+
+Annual mean precipitation for the considered time interval extracted from the Earth Systems Modelling Results website - Bristol Research Initiative for the Dynamic Global Environment. Model ref: https://www.paleo.bristol.ac.uk/ummodel/scripts/html_bridge/scotese_02.html - Paper ref: https://www.paleo.bristol.ac.uk/ummodel/scripts/papers/Valdes_et_al_2021.html
+
+The diversity of physiographic (AREA) is measured based on Shannon’s equitability, which is calculated by normalizing the Shannon-Weaver diversity index. Here we use 3 categories to compute the index, namely the hydrology, normalised surface and slope categories.
+
+Area + Rain --> Parameters calculated using goSPL (the Global Scalable Paleo Landscape Evolution - https://gospl.readthedocs.io) using Paleo-elevation reconstructions from Scotese & Wright (2018) [PALEOMAP Project - https://doi.org/10.5281/zenodo.5460860] and Precipitation grids from Valdes et al. (2021) [https://doi.org/10.5194/cp-17-1483-2021 | data available from the Bristol Research Initiative for the Dynamic Global Environment. Model ref: https://www.paleo.bristol.ac.uk/ummodel/scripts/html_bridge/scotese_02.html].
+
+Publications: 
+
+Salles, T., L. Husson, M. Lorcery, B. Halder Boggiani (2022). Paleo-Physiography Elevation-only Dataset, HydroShare, http://www.hydroshare.org/resource/b3f1e3581d174bf58b00ba5672604710
+
+Scotese, C. R., Song, H., Mills, B. J. W., & van der Meer, D. G. (2021). Phanerozoic paleotemperatures: The earth’s changing climate during the last 540 million years. Earth-Science Reviews, 215, 103503. https://doi.org/10.1016/j.earscirev.2021.103503
+
+
+Description: 
+
+No additional cost is added to the geographical distances, meaning that connections costs equal distance in grid cell units multiplied by the raster resolution. For landscapes with a coordinate system (crs) the cost is defined in meters, as defined by the coordinate system. By dividing the cost function by 1000 we get the cost of traveling for 1 km. 
+
+Landmasses with water as NA: only sites which have environmental values (no NAs) are considered habitable and suitable terrestrial sites should have a cost penalty of one (x1), but dispersal over water sites should double (x2) the cost of dispersal.
+
