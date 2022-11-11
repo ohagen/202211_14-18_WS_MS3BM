@@ -31,10 +31,11 @@
 ### [] source.R ------------
 source(file.path(getwd(), "source.R"))
 
-
-
-wd <- "SA_exercise"
-od <- "output"
+### [] Paths ---------------
+conf_d <- file.path(dd, "configs/SA_1d")
+land_d <- file.path(dd, "landscapes/SA_coarse")
+exp_d <- file.path(dd, "examples/day2")
+out_d <- file.path(od, "day2")
 
 # install new packages
 install.packages("randtoolbox") 
@@ -86,7 +87,7 @@ scatterplot3d(params_table, xlab="dispersal_scale", ylab="sigma", zlab="divergen
 params_table$model <- sapply(seq(1, n, 1), FUN=function(x){paste("SA_model_", x, sep="")})
 
 # save the table
-write.table(params_table, file=file.path(wd, "data", "SA_param_table.txt"), row.names = F, col.names = T)
+write.table(params_table, file=file.path(exp_d, "SA_param_table.txt"), row.names = F, col.names = T)
 
 # Questions to think about...
 # can you think of other ways to sample parameters?
@@ -110,7 +111,7 @@ for(i in 1:nrow(params_table)){
   params <- params_table[i,]
   
   # read in the config template
-  config_i <- readLines(file.path(wd, "code", "config_template_M1_SA.R"))
+  config_i <- readLines(file.path(conf_d, "config_template_M1_SA.R"))
   
   # replace the lines in the template with the parameter values from row i
   config_i <- gsub('*.params\\$sigma', params$sigma, config_i)
@@ -118,7 +119,7 @@ for(i in 1:nrow(params_table)){
   config_i <- gsub('*.params\\$divergence_threshold', params$divergence_threshold, config_i)
   
   # save the config with a unique name
-  writeLines(config_i, file.path(wd, "data", "SA_configs", paste0('SA_config_M1_', i, '.R')))
+  writeLines(config_i, file.path(od, "day2", "SA_configs", paste0('SA_config_M1_', i, '.R')))
   
 }
 
@@ -130,7 +131,7 @@ for(i in 1:nrow(params_table)){
   
   params <- params_table[i,]
   # read in the config template
-  config_i <- readLines(file.path(wd, "code", "config_template_M2_SA.R"))
+  config_i <- readLines(file.path(conf_d, "config_template_M2_SA.R"))
   
   # replace the lines in the template with the parameter values from row i
   config_i <- gsub('*.params\\$sigma', params$sigma, config_i)
@@ -138,7 +139,7 @@ for(i in 1:nrow(params_table)){
   config_i <- gsub('*.params\\$divergence_threshold', params$divergence_threshold, config_i)
   
   # save the config with a unique name
-  writeLines(config_i, file.path(wd, "data", "SA_configs", paste0('SA_config_M2_', i, '.R')))
+  writeLines(config_i, file.path(od, "day2", "SA_configs", paste0('SA_config_M2_', i, '.R')))
 }
 
 
@@ -157,7 +158,7 @@ library(foreach)
 #### RUN SINGLE SIMULATION ------------
 
 # get config file names and order them numerically
-configs <- list.files(file.path(wd, "data","SA_configs"))
+configs <- list.files(file.path(exp_d,"SA_configs"))
 
 # subset M1 configs
 configs_m1 <- configs[grepl("SA_config_M1", configs)]
@@ -168,16 +169,16 @@ configs_m2 <- configs[grepl("SA_config_M2", configs)]
 configs_m2 <- configs_m2[order(as.numeric(sapply(sapply(configs_m2, FUN=function(x)(strsplit(x, "_")[[1]][4])), FUN=function(y){strsplit(y, ".R")[[1]][1]})))]
 
 # run a single simulation under M1!
-sim_1 <- run_simulation(config = file.path(wd, "data", "SA_configs", configs_m1[1]),
-                        landscape = file.path(wd, "data", "SA_coarse"),
+sim_1 <- run_simulation(config = file.path(od, "day2", "SA_configs", configs_m1[1]),
+                        landscape = land_d,
                         verbose=0, # no progress printed
-                        output_directory=file.path(wd, od))
+                        output_directory=file.path(out_d))
 
 # run a single simulation under M2!
-sim_2 <- run_simulation(config = file.path(wd, "data", "SA_configs", configs_m2[1]),
-                        landscape = file.path(wd, "data", "SA_coarse"),
+sim_2 <- run_simulation(config = file.path(od, "day2", "SA_configs", configs_m2[1]),
+                        landscape = land_d,
                         verbose=0, # no progress printed
-                        output_directory=file.path(wd, od))
+                        output_directory=file.path(out_d))
 
 
 # this next bit shows one way of running a batch of simulations
@@ -198,10 +199,10 @@ if(run_slow==T){
   # use foreach loop to run simulations in parallel
   foreach(i=1:n) %dopar% {
     library(gen3sis)
-    run_simulation(config = file.path(wd, "data", "SA_configs", configs_m1[i]),
-                   landscape = file.path(wd, "data", "SA_coarse"),
+    run_simulation(config = file.path(od, "day2", "SA_configs", configs_m1[i]),
+                   landscape = land_d,
                    verbose=0, # no progress printed
-                   output_directory=file.path(wd, od),
+                   output_directory=file.path(out_d),
                    call_observer = NA)
   }
   
@@ -212,10 +213,10 @@ if(run_slow==T){
   registerDoParallel(cl)
   foreach(i=1:n) %dopar% {
     library(gen3sis)
-    run_simulation(config = file.path(wd, "data", "SA_configs", configs_m2[i]),
-                   landscape = file.path(wd, "data", "SA_coarse"),
+    run_simulation(config = file.path(od, "day2", "SA_configs", configs_m2[i]),
+                   landscape = land_d,
                    verbose=0, # no progress printed
-                   output_directory=file.path(wd, od),
+                   output_directory=file.path(out_d),
                    call_observer = NA)
   }
   
@@ -261,7 +262,7 @@ params_m2 <- params_table
 
 # lets work through a single simulation, then we can loop it over them all
 # okey dokey, lets start by looking at the sgen3sis summary file to start
-summary_1 <- readRDS(file.path(wd, od, paste0("SA_config_M1_", 1),  "sgen3sis.rds"))
+summary_1 <- readRDS(file.path(out_d, paste0("SA_config_M1_", 1),  "sgen3sis.rds"))
 
 # we're interested here in the phylo summary, richness final, and occupancy
 head(summary_1$summary$phylo_summary)
@@ -285,7 +286,7 @@ Occ <- tail(summary_1$summary$occupancy,1)
 
 # now lets move onto some phylogenetic tree shape metrics
 # lets load in the phylogentic tree nexus file
-phy_1 <- read.nexus(file.path(wd, od, paste0("SA_config_M1_", 1),  "phy.nex"))
+phy_1 <- read.nexus(file.path(out_d, paste0("SA_config_M1_", 1),  "phy.nex"))
 
 # lets resolve the root polytomy so the tree is completely bifuricating
 phy_1 <- multi2di(phy_1)
@@ -299,11 +300,11 @@ is.binary(phy_1)
 Gamma <- gammaStat(phy_1)
 
 # load the landscape object 
-landscape_1 <- readRDS(file.path(wd, od, paste0("SA_config_M1_", 1),"landscapes","landscape_t_0.rds"))
+landscape_1 <- readRDS(file.path(out_d, paste0("SA_config_M1_", 1),"landscapes","landscape_t_0.rds"))
 
 # Lets now look at some metrics from the species object
 # load species object
-species_1 <- readRDS(file.path(wd, od, paste0("SA_config_M1_", 1), "species", "species_t_0.rds"))
+species_1 <- readRDS(file.path(out_d, paste0("SA_config_M1_", 1), "species", "species_t_0.rds"))
 
 # check out the species object for species 1
 # abundance in each grid cells
@@ -360,19 +361,19 @@ TBS <- cor(traits_1[,"body_size"], traits_1[, "temp"], method="spearman", use='c
 # need to have run the simulations for this
 # so we'll just load in the precalulated metrics
 if(run_slow==TRUE){
-  landscape_i <- readRDS(file.path(wd, od, paste0("SA_config_M1_", 1),"landscapes","landscape_t_0.rds"))
+  landscape_i <- readRDS(file.path(out_d, paste0("SA_config_M1_", 1),"landscapes","landscape_t_0.rds"))
   
   for(i in 1:n){
     
-    summary_1 <- readRDS(file.path(wd, od, paste0("SA_config_M1_", i),  "sgen3sis.rds"))
+    summary_1 <- readRDS(file.path(out_d, paste0("SA_config_M1_", i),  "sgen3sis.rds"))
     
     
     richness_1 <- summary_1$summary$`richness-final`
-    phy_1 <- read.nexus(file.path(wd, od, paste0("SA_config_M1_", i),  "phy.nex"))
+    phy_1 <- read.nexus(file.path(out_d, paste0("SA_config_M1_", i),  "phy.nex"))
     phy_1 <- multi2di(phy_1)
     
     # in case of simulation not finishing, use try
-    species_1 <- try(readRDS(file.path(wd, od, paste0("SA_config_M1_", i), "species", "species_t_0.rds")))
+    species_1 <- try(readRDS(file.path(out_d, paste0("SA_config_M1_", i), "species", "species_t_0.rds")))
     if(class(species_1)=="try-error"){next}
     all_cells <- rownames(landscape_1$coordinates)
     all_species_presence <- do.call( cbind, lapply(species_1, FUN = function(x) {ifelse(all_cells %in% names(x$abundance), 1, 0)}))
@@ -408,14 +409,14 @@ if(run_slow==TRUE){
   # repeat for M2
   for(i in 1:n){
     
-    summary_1 <- try(readRDS(file.path(wd, od, paste0("SA_config_M2_", i),  "sgen3sis.rds")))
+    summary_1 <- try(readRDS(file.path(out_d, paste0("SA_config_M2_", i),  "sgen3sis.rds")))
     NSP <- tail(summary_1$summary$phylo_summary[, "alive"])[1]
     if(NSP > 10000){next}
     if(class(summary_1 )=='try-error'){next}
     richness_1 <- summary_1$summary$`richness-final`
-    phy_1 <- read.nexus(file.path(wd, od, paste0("SA_config_M2_", i),  "phy.nex"))
+    phy_1 <- read.nexus(file.path(out_d, paste0("SA_config_M2_", i),  "phy.nex"))
     phy_1 <- multi2di(phy_1)
-    species_1 <- readRDS(file.path(wd, od, paste0("SA_config_M2_", i), "species", "species_t_0.rds"))
+    species_1 <- readRDS(file.path(out_d, paste0("SA_config_M2_", i), "species", "species_t_0.rds"))
     all_cells <- rownames(landscape_1$coordinates)
     all_species_presence <- do.call( cbind, lapply(species_1, FUN = function(x) {ifelse(all_cells %in% names(x$abundance), 1, 0)}))
     colnames(all_species_presence ) <- paste0("species",unlist(lapply(species_1, function(x){x$id})))
@@ -446,13 +447,13 @@ if(run_slow==TRUE){
     gc() # clean up the workspace
   }
   
-  write.csv(params_m1,  file=file.path(wd, "data", "summary_table_m1.csv"), row.names = FALSE)
-  write.csv(params_m2,  file=file.path(wd, "data", "summary_table_m2.csv"), row.names = FALSE)
+  write.csv(params_m1,  file=file.path(exp_d, "summary_table_m1.csv"), row.names = FALSE)
+  write.csv(params_m2,  file=file.path(exp_d, "summary_table_m2.csv"), row.names = FALSE)
   
 } else{ # just read in pre-calculated metrics
   
-  params_m1 <- read.csv( file=file.path(wd, "data", "summary_table_m1.csv"))
-  params_m2 <- read.csv( file=file.path(wd, "data", "summary_table_m2.csv"))
+  params_m1 <- read.csv( file=file.path(exp_d, "summary_table_m1.csv"))
+  params_m2 <- read.csv( file=file.path(exp_d, "summary_table_m2.csv"))
 }
 
 #lets have a quick look at some of them
@@ -948,10 +949,10 @@ ggplot(svmLinear_varI, aes(Importance))+
 #empirical[8, 5:16] <- apply(empirical[, 5:16], 2, FUN=median, na.rm=T)
 #empirical$clade <- c("clade_1", "clade_2", "clade_3", "clade_4", "clade_5", "clade_6", "clade_7", "clade_8")
 #empirical <- empirical[, c(17, 5:16)]
-#write.csv(empirical, file.path(wd, "data", "pseudo_empirical_data.csv"), row.names = FALSE)
+#write.csv(empirical, file.path(exp_d, "pseudo_empirical_data.csv"), row.names = FALSE)
 
 # load the data
-empirical <- read.csv(file.path(wd, "data", "pseudo_empirical_data.csv"))
+empirical <- read.csv(file.path(exp_d, "pseudo_empirical_data.csv"))
 
 # just so it matches the simulated daataset column names...
 # ...we'll give the clade names column label as generating_model
