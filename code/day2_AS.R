@@ -164,8 +164,7 @@ library(foreach)
 #### RUN SINGLE SIMULATION ------------
 
 # get config file names and order them numerically
-configs <- list.files(file.path(exp_d,"SA_configs"))
-#### ALEX.. is this fix correct?
+configs <- list.files(file.path(od,"day2","SA_configs"))
 # configs <- list.files(file.path(od, "day2", "SA_configs"))
 
 
@@ -182,13 +181,13 @@ configs_m2 <- configs_m2[order(as.numeric(sapply(sapply(configs_m2, FUN=function
 # run a single simulation under M1!
 sim_1 <- run_simulation(config = file.path(od, "day2", "SA_configs", configs_m1[1]),
                         landscape = land_d,
-                        verbose=0, # no progress printed
+                        verbose=1, # no progress printed
                         output_directory=file.path(out_d))
 
 # run a single simulation under M2!
 sim_2 <- run_simulation(config = file.path(od, "day2", "SA_configs", configs_m2[1]),
                         landscape = land_d,
-                        verbose=0, # no progress printed
+                        verbose=1, # no progress printed
                         output_directory=file.path(out_d))
 
 
@@ -239,13 +238,13 @@ if(run_slow==T){
 # install new packages
 install.packages("ape")
 install.packages("treebalance")
-install.packages("PhyloMeasures")
+install.packages("pez")
 install.packages("ggplot2")
 
 # libraries
 library(ape)
 library(treebalance)
-library(PhyloMeasures)
+library(pez)
 library(ggplot2)
 
 
@@ -342,11 +341,11 @@ colnames(all_species_presence ) <- paste0("species",unlist(lapply(species_1, fun
 presence_absence_matrix <- cbind(landscape_1$coordinates, all_species_presence)
 
 # lets get 3 community phylogenetic metrics!
-pd_estimate <- pd.query(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)], standardize = T)
-mpd_estimate <- mpd.query(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)], standardize = T)
-mntd_estimate <- mpd.query(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)], standardize = T)
+pd_estimate <- as.data.frame(.pd(comparative.comm(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)])))# here pd.ivs is the standardized for species richness
+mpd_estimate <- .mpd(comparative.comm(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)]))# here pd.ivs is the standardized for species richness
+mntd_estimate <-.mntd(comparative.comm(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)])) # here pd.ivs is the standardized for species richness
 
-PD <- mean(pd_estimate, na.rm=T)
+PD <- mean(pd_estimate$pd.ivs, na.rm=T)
 MNTD <- mean(mntd_estimate, na.rm=T)
 MPD <- mean(mpd_estimate, na.rm=T)
 
@@ -391,15 +390,15 @@ if(run_slow==TRUE){
     colnames(all_species_presence ) <- paste0("species",unlist(lapply(species_1, function(x){x$id})))
     presence_absence_matrix <- cbind(landscape_1$coordinates, all_species_presence)
     
-    pd_estimate <- pd.query(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)], standardize = T)
-    params_m1$PD[i] <- mean(pd_estimate, na.rm=T)
+    pd_estimate <- as.data.frame(.pd(comparative.comm(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)])))# here pd.ivs is the standardized for species richness
+    params_m1$PD[i] <- mean(pd_estimate$pd.ivs, na.rm=T)
     rm(pd_estimate)
     
-    mpd_estimate <- mpd.query(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)], standardize = T)
+    mpd_estimate <- .mpd(comparative.comm(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)]))# here pd.ivs is the standardized for species richness
     params_m1$MPD[i] <- mean(mpd_estimate, na.rm=T)
     rm(mpd_estimate)
     
-    mntd_estimate <- mpd.query(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)], standardize = T)
+    mntd_estimate <-.mntd(comparative.comm(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)])) # here pd.ivs is the standardized for species richness
     params_m1$MNTD[i] <- mean(mntd_estimate, na.rm=T)
     rm(mntd_estimate)
     
@@ -433,17 +432,18 @@ if(run_slow==TRUE){
     colnames(all_species_presence ) <- paste0("species",unlist(lapply(species_1, function(x){x$id})))
     presence_absence_matrix <- cbind(landscape_1$coordinates, all_species_presence)
     
-    pd_estimate <- pd.query(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)], standardize = T)
-    params_m2$PD[i] <- mean(pd_estimate, na.rm=T)
+    pd_estimate <- as.data.frame(.pd(comparative.comm(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)])))# here pd.ivs is the standardized for species richness
+    params_m1$PD[i] <- mean(pd_estimate$pd.ivs, na.rm=T)
     rm(pd_estimate)
     
-    mpd_estimate <- mpd.query(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)], standardize = T)
-    params_m2$MPD[i] <- mean(mpd_estimate, na.rm=T)
+    mpd_estimate <- .mpd(comparative.comm(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)]))# here pd.ivs is the standardized for species richness
+    params_m1$MPD[i] <- mean(mpd_estimate, na.rm=T)
     rm(mpd_estimate)
     
-    mntd_estimate <- mpd.query(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)], standardize = T)
-    params_m2$MNTD[i] <- mean(mntd_estimate, na.rm=T)
+    mntd_estimate <-.mntd(comparative.comm(phy_1, presence_absence_matrix[, 3:ncol(presence_absence_matrix)])) # here pd.ivs is the standardized for species richness
+    params_m1$MNTD[i] <- mean(mntd_estimate, na.rm=T)
     rm(mntd_estimate)
+    
     traits_1 <- do.call(rbind, lapply(species_1, FUN=function(x){if(!is.null(x)){colMeans(x$traits)}else {data.frame( temp=NA, body_size=NA, dispersal=NA) }}))
     
     params_m2$NSP[i] <- NSP
@@ -582,13 +582,9 @@ summary(m12)
 
 # can plot out the regression coefficients to see how metrics respond to different parameters
 # plot the first 5
-#ALEX I can't run this without installing broom. and these other packages... keeping this comment here JIC..!
-# library(broom)
-# library("ggstance")
-# library("broom.mixed")
-plot_summs(m1, m2, m3, m4, m5, m6) # I had troubles with this...
+#plot_summs(m1, m2, m3, m4, m5, m6) # I had troubles with this...
 # plot the second 5
-plot_summs(m7, m8, m9, m10, m11, m12)
+#plot_summs(m7, m8, m9, m10, m11, m12)
 
 # We could also increase complexity and add interaction terms
 m1_int  <- lm(NSP ~ dispersal_scale * sigma  * divergence_threshold, data=params_m1_scaled)
@@ -599,7 +595,7 @@ m5_int  <- lm(MBS ~ dispersal_scale * sigma  * divergence_threshold, data=params
 m6_int  <- lm(SDBS ~ dispersal_scale * sigma  * divergence_threshold, data=params_m1_scaled)
 m7_int  <- lm(MT ~ dispersal_scale * sigma  * divergence_threshold, data=params_m1_scaled)
 m8_int  <- lm(SDT ~ dispersal_scale * sigma  * divergence_threshold, data=params_m1_scaled)
-m9_int <- lm(TBS ~ dispersal_scale * sigma  * divergence_threshold, data=params_m1_scaled)
+m9_int  <- lm(TBS ~ dispersal_scale * sigma  * divergence_threshold, data=params_m1_scaled)
 m10_int <- lm(PD ~ dispersal_scale * sigma  * divergence_threshold, data=params_m1_scaled)
 m11_int <- lm(MPD ~ dispersal_scale * sigma  * divergence_threshold, data=params_m1_scaled)
 m12_int <- lm(MNTD ~ dispersal_scale * sigma  * divergence_threshold, data=params_m1_scaled)

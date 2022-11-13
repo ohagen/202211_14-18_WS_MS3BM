@@ -25,6 +25,7 @@
 # 1. THE GEN3SIS R-PACKAGE
 # 2. MODIFY LANDSCAPES AND ECO-EVOLUTIONARY RULES
 # 3. LEARNING HOW TO TROUBLESHOOT
+# 4. EXERCISE YOUR SKILLS
 
 # .  ----------------------------------------
 #  [ 1. THE GEN3SIS R-PACKAGE ]      ########
@@ -236,7 +237,7 @@ data_plot <- na.omit(data_plot[order(data_plot[, 1], decreasing = FALSE), ])
 # get the number of observations
 n <- paste0("observations (n = ", length(landscape_t0$rich), ")")
 # plot model curve
-plot(data_plot[, 1], data_plot[, 2], xlab = "Temperature [°C]", 
+plot(data_plot[, 1], data_plot[, 2], xlab = "Temperature [?C]", 
      ylab = expression(paste(alpha," richness")), frame.plot = F, type = "l", 
      col = "red", lwd = 2, xlim = c(min(landscape_t0$temp), 
                                                                                                                                                                   max(landscape_t0$temp)), ylim = c(min(landscape_t0$rich), max(landscape_t0$rich)))
@@ -447,7 +448,7 @@ conf$gen3sis$initialization$create_ancestor_species
 
 conf_n <- conf
 
-# spread ancestor over arround the world
+# spread ancestor over around the world
 conf_n$gen3sis$initialization$create_ancestor_species <- function(landscape, config) {
   range <- c(-180, 180, -90, 90)
   co <- landscape$coordinates
@@ -517,12 +518,39 @@ conf_n$gen3sis$initialization$create_ancestor_species <- function(landscape, con
   return(list(new_species))
 }
 
+
+# you can see what objects are in the internal environment with ls().
+
+# timestep at the landscape object can help you stop at your convenience:
+# stop_time <- "10"
+# get_dispersal_values <- function(n, species, landscape, config) {
+  # if(landscape$timestep== stop_time){browser()}
+# also found on vars:
+# vars <- dynGet("vars", inherits = TRUE)
+# if(vars$ti== stop_time){browser()}
+
+# get your error stats
+# options()$error
+# set the global options of your R session to enter the browser mode anytime you run into an error.
+# options(error=recover)
+
 # re_run
 sim <- run_simulation(config = conf_n, 
                       landscape = file.path(dd, "landscapes/SA_1d"), output_directory = od, call_observer = "all", 
                       verbose = 1)
 
-### CHANGING WORLDS
+# *\o/* Discover the gen3sis calls ------------
+# This call has a lot of browsers inside the config. This will help us refresh the gen3sis calls.
+sb <- run_simulation(config = file.path(dd, "configs/SA_1d/config_browser.R"), 
+                      landscape = file.path(dd, "landscapes/SA_1d"), output_directory = od, call_observer = "all", 
+                      verbose = 3)
+
+# second stop! stop_time="60"
+
+# Question [] What would be the consequences of changing this config seed?------ 
+rm(sb)
+
+### Changing worlds practical ----
 
 # try yourself with the simple and World center data-set
 cdp <- system.file(file.path("extdata", "CaseStudy1"), package="gen3sis")
@@ -569,6 +597,10 @@ plot_summary(africa)
 
 # [] All GOOD? --------------
 
+# .  ----------------------------------------
+#  [ 4. EXERCISE YOUR SKILLS ]       ########
+# .  ----------------------------------------
+
 ### Exercise (5min) -----------------
 # What would you like to try out with gen3sis? -----------
 # [] Look at different config files and try to explore them-------
@@ -576,21 +608,22 @@ plot_summary(africa)
 # [] What for do we have a set.seed variable here -------
 
 ### Exercise (45 min) -----------------
-# [] Create a config ------- 
+# e1[] Create a config ------- 
 # The config should have: No trait evolution,  starting with at least 6 species 
 # that have different temperature niche width and height.
 
 
 ### Exercise (45 min) -----------------
-# [] Create a No Evol model ------- 
+# e2[] Create a No Evol model ------- 
 # The config should have: No trait evolution,  starting with at least 6 species 
 # that have different temperature niche width and height.
 
-# [] Create a Complex Fossilization model ------- 
+# e3[] Create a Complex Fossilization model ------- 
 # Use these: trait_names = c("temp",  "dispersal", "foss")
 # let traits evolve
 # make dispersal and foss interact or not
 # 
+
 
 ###### Project definition for next block --------------
 
