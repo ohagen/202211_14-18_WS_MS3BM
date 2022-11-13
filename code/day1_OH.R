@@ -565,14 +565,34 @@ plot_summary(africa)
 #                        output_directory = od)
 
 
-# [] Exercise Look at different config files and try to explore them.
-
-# what are they doing?
 
 
+# [] All GOOD? --------------
+
+### Exercise (5min) -----------------
+# What would you like to try out with gen3sis? -----------
+# [] Look at different config files and try to explore them-------
+# [] what are they doing? -------
+# [] What for do we have a set.seed variable here -------
+
+### Exercise (45 min) -----------------
+# [] Create a config ------- 
+# The config should have: No trait evolution,  starting with at least 6 species 
+# that have different temperature niche width and height.
 
 
-###### > Project definition for next block --------------
+### Exercise (45 min) -----------------
+# [] Create a No Evol model ------- 
+# The config should have: No trait evolution,  starting with at least 6 species 
+# that have different temperature niche width and height.
+
+# [] Create a Complex Fossilization model ------- 
+# Use these: trait_names = c("temp",  "dispersal", "foss")
+# let traits evolve
+# make dispersal and foss interact or not
+# 
+
+###### Project definition for next block --------------
 
 ### Exercise (5min) -----------------
 # What is still unclear to you? What would you like to try out with gen3sis?
