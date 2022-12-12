@@ -19,33 +19,21 @@ max_number_of_coexisting_species = 1000
 # a list of traits to include with each species
 # a "dispersion" trait is implictly added in any case
 #trait_names = c("t_min", "a_min", "competition", "dispersion")
-trait_names = c("opt_temp",  "dispersal", "foss") # "prec",
+trait_names = c("temp",  "dispersal", "foss") # "arid",
 
 # ranges to scale the input environemts with:
 # not listed variable:         no scaling takes place
 # listed, set to NA:           the environmental variable will be scaled from [min, max] to [0, 1]
 # lsited with a given range r: the environmental variable will be scaled from [r1, r2] to [0, 1]
-environmental_ranges = list() #"temp" = c(-45, 55), "area"=c(6895.094, 196948.4), "prec"=c(1,0.5))
+environmental_ranges = list() #"temp" = c(-45, 55), "area"=c(6895.094, 196948.4), "arid"=c(1,0.5))
 
 # a place to inspect the internal state of the simulation and collect additional information if desired
 end_of_timestep_observer = function(data, vars, config){
   #plot
-  #plot_richness(data$all_species, data$landscape)
-  #save
-  
-  # oldpar <- par(no.readonly = TRUE)
-  # on.exit(par(oldpar))
-  #browser() #first,browse#
-  #par(mfrow=c(1,2))
   plot_richness(data$all_species, data$landscape)
-  # plot_species_presence(data$all_species[[1]], data$landscape)
-  # plot_species_presence(data$all_species[[2]], data$landscape)
-  # plot_species_presence(data$all_species[[3]], data$landscape)
-  
-  
+  #save
   save_species()
   save_landscape()
-  save_phylogeny()
 }
 
 
@@ -57,9 +45,6 @@ end_of_timestep_observer = function(data, vars, config){
 initial_abundance = 1
 # place species within rectangle, our case entire globe
 create_ancestor_species <- function(landscape, config) {
-  #### BROWSER ! ----------
-  # browser()
-  #### BROWSER ! ----------
   range <- c(-180, 180, -90, 90)
   co <- landscape$coordinates
   selection <- co[, "x"] >= range[1] &
@@ -67,25 +52,13 @@ create_ancestor_species <- function(landscape, config) {
     co[, "y"] >= range[3] &
     co[, "y"] <= range[4]
   initial_cells <- rownames(co)[selection]
-  n_s <- 2
-  new_speciez <- list()
-  opt_temps <- c(17,22)
-  for (sp_i in 1:n_s){
-    new_species <- create_species(initial_cells, config)
-    #set local adaptation to max optimal temp equals local temp
-    new_species$traits[ , "opt_temp"] <- opt_temps[sp_i] #landscape$environment[,"temp"]
-    #set fossilization to be randomly selected in a uniform prior
-    new_species$traits[ , "foss"] <- runif(1,0,1)
-    new_species$traits[ , "dispersal"] <- 1
-    new_speciez[[sp_i]] <- new_species
-  }
-  # new_species <- create_species(initial_cells, config)
-  # #set local adaptation to max optimal temp equals local temp
-  # new_species$traits[ , "opt_temp"] <- 22 #landscape$environment[,"temp"]
-  # #set fossilization to be randomly selected in a uniform prior
-  # new_species$traits[ , "foss"] <- runif(1,0,1)
-  # new_species$traits[ , "dispersal"] <- 1
-  return(new_speciez)
+  new_species <- create_species(initial_cells, config)
+  #set local adaptation to max optimal temp equals local temp
+  new_species$traits[ , "temp"] <- landscape$environment[,"temp"]
+  #set fossilization to be randomly selected in a uniform prior
+  new_species$traits[ , "foss"] <- runif(1,0,1)
+  new_species$traits[ , "dispersal"] <- 1
+  return(list(new_species))
 }
 
 
@@ -94,9 +67,6 @@ create_ancestor_species <- function(landscape, config) {
 #################
 # returns n dispersal values
 get_dispersal_values <- function(n, species, landscape, config) {
-  #### BROWSER ! ----------
-  browser()
-  #### BROWSER ! ----------
   values <- rweibull(n, shape =3, scale =781) ### VARY
   return(values)
 }
@@ -130,12 +100,12 @@ apply_evolution <- function(species, cluster_indices, landscape, config) {
     # hist(traits[cells_cluster, "temp"], main="before")
     mean_abd <- mean(species$abundance[cells_cluster])
     weight_abd <- species$abundance[cells_cluster]/mean_abd
-    traits[cells_cluster, "opt_temp"] <- mean(traits[cells_cluster, "opt_temp"]*weight_abd)
+    traits[cells_cluster, "temp"] <- mean(traits[cells_cluster, "temp"]*weight_abd)
     # hist(traits[cells_cluster, "temp"], main="after")
   }
   #mutations
-  mutation_deltas <-rnorm(length(traits[, "opt_temp"]), mean=0, sd=trait_evolutionary_power)
-  traits[, "opt_temp"] <- traits[, "opt_temp"] + mutation_deltas
+  mutation_deltas <-rnorm(length(traits[, "temp"]), mean=0, sd=trait_evolutionary_power)
+  traits[, "temp"] <- traits[, "temp"] + mutation_deltas
   mutation_deltas <-rnorm(length(traits[, "foss"]), mean=0, sd=trait_evolutionary_power)
   traits[, "foss"] <- traits[, "foss"] + mutation_deltas
   # rang between 0 and 1
@@ -154,19 +124,17 @@ apply_evolution <- function(species, cluster_indices, landscape, config) {
 # returns a vector of abundances
 # set the abundance to 0 for every species supposed to die
 apply_ecology <- function(abundance, traits, landscape, config, abundance_scale = 10, abundance_threshold = 1) {
-  #### BROWSER ! ----------
-  # browser()
-  #### BROWSER ! ----------
-  # fg <- function(x,a,b,c){
-  #   v <- a*exp(-((x-b)^2/(2*c^2)))
-  #   return(v)
-  # }
+  
+  fg <- function(x,a,b,c){
+    v <- a*exp(-((x-b)^2/(2*c^2)))
+    return(v)
+  }
   # 
   # plot(fg(x=seq(0,1,0.01), a=10, b=0.5, c=0.3), type='l') # c ranges from 0.001 to 0.3 (very wide niche)
   # abline(h=1)
   
   # gaussian
-  abundance <- (abundance_scale*exp(-((traits[, "opt_temp"] - landscape[, "temp"])**2/(21.232**2))))*(landscape[,"arid"])
+  abundance <- (abundance_scale*exp(-((traits[, "temp"] - landscape[, "temp"])**2/(21.232**2))))*(landscape[,"arid"])
   #abundance thhreashold
   abundance[abundance<abundance_threshold] <- 0
   return(abundance)

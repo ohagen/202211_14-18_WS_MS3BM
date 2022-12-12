@@ -8,12 +8,16 @@
 ## Author: Hagen (oskar@hagen.bio), Skeels and Rosenbaum 
 ##=======================================================================##
 
-library(gen3sis)
-# example course
+# Here we have a list of packages we want to install
+lop <- c("gen3sis", "raster") #list.of.packages
+# And finally we install the missing packages, including their dependency.
+new.packages <- lop[!(lop %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+# After the installation process completes, we load all packages.
+sapply(lop,require,character=TRUE)
 
 # set working directory -----------
-wd <- "C:/Users/am92guke/Documents/iDiv/Teaching/gen3sis workshop iDiv/202211_14-18_WS_MS3BM/code"
-setwd(wd)
+setwd(getwd())
 
 ### [] create variables for directory relative location -------
 # dd= data directory
@@ -27,7 +31,6 @@ cat(
 "# During this prac we won't run the code in the run_slow sections (will take too long!) \n
 # but so you get an idea of the code, please take a look and see whats going on in these sections \n
 # keep this as FALSE  \n")
-
 run_slow <- FALSE
 
 

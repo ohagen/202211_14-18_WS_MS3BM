@@ -37,26 +37,20 @@
 
 install.packages("gen3sis")
 
-library(raster)
-library(gen3sis)
-
 ### [] download data --------
 
 
 ### [] store it into working directory ------------
 
 ### [] source.R ------------
-getwd()
-source("C:/Users/am92guke/Documents/iDiv/Teaching/gen3sis workshop iDiv/202211_14-18_WS_MS3BM/code/source.R")
-getwd()
+source("./source.R")
 ### [] Reflection --------
 ### [] Questions: Sourcing, WD, relative and absolute paths clear?
 # What does it means, if the bellow does not work? ------------
 source(file.path(getwd(), "source.R"))
 ### [] Questions: Did you noticed the variables in the global environment?
 
-
-
+#get version of gen3sis. Who is running the dev. version?
 print(paste("gen3sis version:", packageVersion("gen3sis")))
 
 ### attention! Download the data If using South America!!!
@@ -87,7 +81,7 @@ lc$temp[1:10, 1:10]
 colnames(lc$temp)
 
 
-plot(rasterFromXYZ(lc$temp[,c("x", "y", "0")]))
+plot(rasterFromXYZ(lc$temp[ ,c("x", "y", "0")]))
 plot(rasterFromXYZ(lc$temp[,c("x", "y", "65")]))
 
 # overlay
@@ -128,7 +122,7 @@ plot(rl0, col=rgb(0,0,1,0.5,1), add=T)
     }
   }
   
-  plots(lc$temp)
+  plots(lc$arid)
 }
 
 
@@ -320,7 +314,7 @@ if(run_slow==T){
   # time series is constant!
   t_steps <- get_time_steps(dataset = "Krapp2021")
   
-  plot(t_steps) # [] whatfor this plot? -----
+  plot(t_steps) # [] what for this plot? -----
   
   # make timesteps at 10k 
   selected_t_steps <- seq(-790000, 0, 10000)
@@ -501,7 +495,7 @@ sim <- run_simulation(config = conf_n,
 
 # OH NO! Somethings is not working....
 
-#resolution
+#resolution...
 conf_n$gen3sis$initialization$create_ancestor_species <- function(landscape, config) {
   # browser()
   range <- c(-50, -45, -30, 20)
@@ -522,12 +516,12 @@ conf_n$gen3sis$initialization$create_ancestor_species <- function(landscape, con
 # you can see what objects are in the internal environment with ls().
 
 # timestep at the landscape object can help you stop at your convenience:
-# stop_time <- "10"
-# get_dispersal_values <- function(n, species, landscape, config) {
-  # if(landscape$timestep== stop_time){browser()}
+stop_time <- "64"
+get_dispersal_values <- function(n, species, landscape, config) {
+if(landscape$timestep== stop_time){browser()}
 # also found on vars:
-# vars <- dynGet("vars", inherits = TRUE)
-# if(vars$ti== stop_time){browser()}
+vars <- dynGet("vars", inherits = TRUE)
+if(vars$ti== stop_time){browser()}
 
 # get your error stats
 # options()$error

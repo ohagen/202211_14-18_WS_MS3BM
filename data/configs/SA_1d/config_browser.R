@@ -35,14 +35,14 @@ trait_names = c("temp", "niche_width", "dispersal") # "prec",
 
 # a place to inspect the internal state of the simulation and collect additional information if desired
 end_of_timestep_observer = function(data, vars, config){
-  # oldpar <- par(no.readonly = TRUE)
-  # on.exit(par(oldpar))
-  # browser() #first,browse#
-  # par(mfrow=c(2,2))
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  #browser() #first,browse#
+  par(mfrow=c(2,2))
   plot_richness(data$all_species, data$landscape)
-  # plot_species_presence(data$all_species[[1]], data$landscape)
-  # plot_species_presence(data$all_species[[2]], data$landscape)
-  # plot_species_presence(data$all_species[[3]], data$landscape)
+  plot_species_presence(data$all_species[[1]], data$landscape)
+  plot_species_presence(data$all_species[[2]], data$landscape)
+  plot_species_presence(data$all_species[[3]], data$landscape)
   
   #save
   # save_species()
@@ -90,7 +90,7 @@ create_ancestor_species <- function(landscape, config) {
 #################
 # returns n dispersal values
 get_dispersal_values <- function(n, species, landscape, config) {
-  # browser() #first,browse# 
+  browser() #first,browse# 
   # if(landscape$timestep==stop_time){browser()} #second,browse# 
   # hint, look at #78 dispersal.R num_draws <- length(free_cells) * length(presence_spi_ti). Start looking for: get_dispersal_values With Ctrl+Shift+F
   # at the species level... e.g. plot_species_presence(species, landscape)
